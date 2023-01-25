@@ -8,7 +8,12 @@ export default function HomeScreen() {
     const [name, setName] = useState('')
     const [age, setAge] = useState(0);
     const [books, setBooks] = useState(['The Secret', 'The Are of War'])
-
+    useEffect(() => {
+        console.log('just mounted');
+        return () => {
+            console.log('unmounting');
+        }
+    })
     const addBook = (title) => {
         setBooks(books => {
             return [...books, title.trim()]
@@ -35,6 +40,9 @@ export default function HomeScreen() {
     useEffect(() => {
         console.log(books);
     }, [books])
+    useEffect( () => {
+
+    }, [name, age, books])
   return (
     <View>
         {
