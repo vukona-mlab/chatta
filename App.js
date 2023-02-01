@@ -1,25 +1,46 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import LoginScreen from './pages/LoginScreen';
 import RegisterScreen from './pages/RegisterScreen';
+import { Ionicons } from '@expo/vector-icons';
+
 export default function App() {
-  const Stack = createNativeStackNavigator()
-  return (
+  const Tab = createBottomTabNavigator()
+  return(
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
+      <Tab.Navigator
+        tabBarActiveTintColor="white"
+        screenOptions={{
+          tabBarStyle: {
+            backgroundColor: 'green',
+          }
+        }}
+        
+      >
+        <Tab.Screen
           name="Login"
-        >
-          {(props) => <LoginScreen {...props} />}
-        </Stack.Screen>
-        <Stack.Screen
+          component={LoginScreen}
+          options={{
+            tabBarActiveTintColor: "#FFF",
+            tabBarIcon: ({color}) => {
+              return <Ionicons name="log-in" size={24} color={color} />
+            }
+          }}
+        />
+        <Tab.Screen
           name="Register"
-        >
-          {(props) => <RegisterScreen {...props} />}
-        </Stack.Screen>
-      </Stack.Navigator>
+          component={RegisterScreen}
+          options={{
+            tabBarActiveTintColor: "#FFF",
+            tabBarIcon: ({color}) => {
+              return <Ionicons name="home" size={24} color={color} />
+            }
+          }}
+        />
+
+      </Tab.Navigator>
     </NavigationContainer>
   )
 }
