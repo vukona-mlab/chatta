@@ -1,6 +1,7 @@
 import { Dimensions, StyleSheet, Text, View, ScrollView } from 'react-native'
 import React from 'react'
 import ChatListItem from '../components/ChatListItem'
+import HomeSearchComponent from '../components/HomeSearchComponent'
 
 const HomeScreen = () => {
   return (
@@ -9,21 +10,7 @@ const HomeScreen = () => {
         scrollEnabled={true}
       >
         <ChatListItem />
-        <ChatListItem />
-        <ChatListItem />
-        <ChatListItem />
-        <ChatListItem />
-        <ChatListItem />
-        <ChatListItem />
-        <ChatListItem />
-        <ChatListItem />
-        <ChatListItem />
-        <ChatListItem />
-        <ChatListItem />
-        <ChatListItem />
-        <ChatListItem />
-        <ChatListItem />
-        <ChatListItem />
+        <HomeSearchComponent />
       </ScrollView>
 
 
