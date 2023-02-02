@@ -1,6 +1,32 @@
 
+import { useState } from 'react';
 import { View, StyleSheet, Text, Button, TouchableOpacity, TextInput } from 'react-native'
+import * as yup from 'yup'
 export default function Register() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const schema = yup.object().shape({
+    email: yup.string().email().required(),
+    name: yup.string().required(),
+    password: yup.string().min(8).required(),
+    confirmPassword: yup.string().min(8).required().test('passwords-match', 'Passords must match', (val) =>{
+      // console.log({password, });
+      return password === val
+    })
+  })
+  const validate = () => {
+    schema.isValid({
+      name: name,
+      password: password,
+      email: email,
+      confirmPassword: confirmPassword
+    }).then(valid => {
+      console.log(valid);
+    })
+  }
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}>
@@ -9,13 +35,29 @@ export default function Register() {
       <View style={styles.bottomContainer}>
         <View style={styles.innerContainer}>
           <View style={styles.inputContainer}>
-            <TextInput style={styles.textInput} placeholder="Email" />
-            <TextInput style={styles.textInput} placeholder="Name" />
-            <TextInput style={styles.textInput} placeholder="Password" />
-            <TextInput style={styles.textInput} placeholder="Confirm Password" />
+            <TextInput
+              style={styles.textInput}
+              placeholder="Email"
+              onChangeText={(text) => setEmail(text)}
+            />
+            <TextInput
+              style={styles.textInput}
+              placeholder="Name"
+              onChangeText={(text) => setName(text)}
+            />
+            <TextInput
+              style={styles.textInput}
+              placeholder="Password"
+              onChangeText={(text) => setPassword(text)}
+            />
+            <TextInput
+              style={styles.textInput}
+              placeholder="Confirm Password"
+              onChangeText={(text) => setConfirmPassword(text)}
+            />
           </View>
           <View style={styles.actionContainer}>
-            <TouchableOpacity style={styles.actionButton}>
+            <TouchableOpacity style={styles.actionButton} onPress={() => validate()}>
               <Text style={styles.signUp}>Sign Up</Text>
             </TouchableOpacity>
             <View style={styles.registeredSec}>
