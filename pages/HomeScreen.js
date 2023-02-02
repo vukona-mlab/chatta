@@ -1,10 +1,13 @@
-import { Dimensions, StyleSheet, Text, View, ScrollView } from 'react-native'
-import React from 'react'
+import { Dimensions, StyleSheet, Text, View, ScrollView, Modal, Pressable } from 'react-native'
+import React, {useState} from 'react'
 import ChatListItem from '../components/ChatListItem'
 import HomeSearchComponent from '../components/HomeSearchComponent'
 import ChatInputComponent from '../components/ChatInputComponent'
+import ChatRequest from '../components/ChatRequest'
+import FAB from '../components/FAB'
 
 const HomeScreen = () => {
+  const [isModalVisible, setIsModalVisible] = useState(false)
   return (
     <View style={styles.container}>
       <ScrollView
@@ -12,9 +15,19 @@ const HomeScreen = () => {
       >
         <ChatListItem />
         <ChatInputComponent />
+        <Modal
+          transparent={true}
+          visible={isModalVisible}
+          animationType="slide"
+        >
+          <ChatRequest onPress={() => setIsModalVisible(false)}/>
+        </Modal>
+        
       </ScrollView>
 
-
+      <Pressable onPress={() => setIsModalVisible(true)}>
+        <FAB />
+      </Pressable>
     </View>
   )
 }
