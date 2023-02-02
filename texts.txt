@@ -1,0 +1,47 @@
+    const texts = [
+        {
+            text: 'Hi there', userID: userID
+        },
+        {
+            text: 'Why here', userID: 'asdfjj43534'
+        },
+        {
+            text: 'Why are we here?', userID: userID
+        },
+        {
+            text: 'What is with this darkness?', userID: 'asdfjj43534'
+        },
+        {
+            text: 'Woah is me', userID: userID
+        },
+        {
+            text: 'When everything is done', userID: userID
+        },
+        {
+            text: 'I think I need more money. This is not it, I can not be broke forever', userID: 'asdfjj43534'
+        },
+        {
+            text: 'I think I need more money. This is not it, I can not be broke forever', userID: 'asdfjj43534'
+        },
+        {
+            text: 'I think I need more money. This is not it, I can not be broke forever', userID: 'asdfjj43534'
+        },
+        {
+            text: 'I think I need more money. This is not it, I can not be broke forever', userID: 'asdfjj43534'
+        },
+        {
+            text: 'I think I need more money. This is not it, I can not be broke forever', userID: 'asdfjj43534'
+        },
+        {
+            text: 'I think I need more money. This is not it, I can not be broke forever', userID: 'asdfjj43534'
+        },
+        {
+            text: 'I think I need more money. This is not it, I can not be broke forever', userID: 'asdfjj43534'
+        },
+        {
+            text: 'I think I need more money. This is not it, I can not be broke forever', userID: 'asdfjj43534'
+        },
+        {
+            text: 'I think I need more money. This is not it, I can not be broke forever', userID: 'asdfjj43534'
+        }
+    ]

@@ -5,12 +5,13 @@ import HomeSearchComponent from '../components/HomeSearchComponent'
 import ChatInputComponent from '../components/ChatInputComponent'
 import ChatRequest from '../components/ChatRequest'
 import FAB from '../components/FAB'
+import ChatComponent from '../components/ChatComponent'
 
 const HomeScreen = () => {
   const [isModalVisible, setIsModalVisible] = useState(false)
   return (
     <View style={styles.container}>
-      <ScrollView
+      {/* <ScrollView
         scrollEnabled={true}
       >
         <ChatListItem />
@@ -27,7 +28,9 @@ const HomeScreen = () => {
 
       <Pressable onPress={() => setIsModalVisible(true)}>
         <FAB />
-      </Pressable>
+      </Pressable> */}
+
+      <ChatComponent />
     </View>
   )
 }
