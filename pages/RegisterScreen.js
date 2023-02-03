@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { View, StyleSheet, Text, Button, TouchableOpacity, TextInput } from 'react-native'
 import * as yup from 'yup'
-export default function Register() {
+export default function Register({navigation}) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -62,7 +62,7 @@ export default function Register() {
             </TouchableOpacity>
             <View style={styles.registeredSec}>
               <Text style={styles.registeredText}>Registered?</Text>
-              <Text style={styles.signInText}>Sign In</Text>
+              <Text style={styles.signInText} onPress={() => navigation.navigate('Login')}>Sign In</Text>
             </View>
           </View>
         </View>

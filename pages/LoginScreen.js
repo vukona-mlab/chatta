@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, Text, TextInput, TouchableOpacity, Alert } from 'react-native'
 import * as yup from 'yup';
-export default function LoginScreen() {
+export default function LoginScreen(props) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('')
     const schema = yup.object().shape({
@@ -50,7 +50,7 @@ export default function LoginScreen() {
                     </TouchableOpacity>
                     <View style={styles.signUpOpt}>
                         <Text style={styles.noAccText}>No account?</Text>
-                        <Text style={styles.signUpText}>Sign Up</Text>
+                        <Text style={styles.signUpText} onPress={() => props.navigation.navigate('Register')}>Sign Up</Text>
                     </View>
                     <View style={styles.forgotPasswordCont}>
                         <Text style={styles.forgotPasswordText}>Forgot Password</Text>
