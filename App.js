@@ -8,6 +8,7 @@ import HomeScreen from './pages/HomeScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
 export default function App() {
   const Tab = createBottomTabNavigator();
   const Stack = createNativeStackNavigator()
@@ -16,7 +17,47 @@ export default function App() {
   })
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Tab.Navigator
+        screenOptions={{
+          tabBarActiveTintColor: '#FFF',
+          tabBarStyle:{
+            backgroundColor: '#26394D',
+            borderTopColor: '#BABABA'
+          }
+        }}
+        tabBarOptions={{
+          showLabel: false
+        }}
+      >
+        <Tab.Screen
+          name="Profile"
+          component={(props) => <ProfileScreen {...props} /> }
+          options={{
+            tabBarIcon: ({color}) => (
+              <Ionicons name="person" size={24} color={color} />
+            )
+          }}
+        />
+        <Tab.Screen
+          name="Home"
+          component={(props) => <HomeScreen {...props} /> }
+          options={{
+            tabBarIcon: ({color}) => (
+              <Ionicons name="chatbox" size={24} color={color} />
+            )
+          }}
+        />
+        <Tab.Screen
+          name="Favorites"
+          component={(props) => <HomeScreen {...props} /> }
+          options={{
+            tabBarIcon: ({color}) => (
+              <Ionicons name="heart" size={24} color={color} />
+            )
+          }}
+        />
+      </Tab.Navigator>
+      {/* <Stack.Navigator>
         <Stack.Screen name="Login" options={{
           headerShown: false
         }}>
@@ -27,7 +68,7 @@ export default function App() {
         }}>
           {(props) => <RegisterScreen {...props} />}
         </Stack.Screen>
-      </Stack.Navigator>
+      </Stack.Navigator> */}
     </NavigationContainer>
   );
 }
