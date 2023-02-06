@@ -1,21 +1,51 @@
-import { StyleSheet, Text, TextInput, View } from 'react-native'
-import React from 'react'
-import { EvilIcons, FontAwesome, MaterialIcons } from '@expo/vector-icons'; 
+import { StyleSheet, Text, TextInput, View, TouchableOpacity, Keyboard } from 'react-native'
+import React, {useRef} from 'react'
+import { EvilIcons, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 
-export default function ChatInputComponent() {
-  return (
-    <View style={styles.container}>
-      <View style={styles.leftView}>
-        <MaterialIcons name="emoji-emotions" size={24} style={styles.emoji}/>
-        <TextInput placeholder={'Type a message'} style={styles.textInput}/>
-        <MaterialIcons name="camera-alt" size={24} style={styles.emoji}/>
-        <FontAwesome name="paperclip" size={22} style={styles.clip}/>
-      </View>
-      <View style={styles.micContainer}>
-      <FontAwesome name="microphone" size={24} style={styles.mic}/>
-      </View>
-    </View>
-  )
+export default function ChatInputComponent({ showEmoGifBoard, isBoardVisible, message, setMessage }) {
+    const inputRef = useRef();
+    return (
+        <View style={styles.container}>
+            <View style={styles.leftView}>
+                {
+                    isBoardVisible ? (
+                        <TouchableOpacity onPress={() => { showEmoGifBoard(false); inputRef.current.focus()}}>
+                            <MaterialIcons name="keyboard" size={24} style={styles.emoji} />
+                        </TouchableOpacity>
+                    ) : (
+                        <TouchableOpacity onPress={() => { showEmoGifBoard(true); Keyboard.dismiss() }}>
+                            <MaterialIcons name="emoji-emotions" size={24} style={styles.emoji} />
+                        </TouchableOpacity>
+                    )
+                }
+
+
+                <TextInput
+                    ref={inputRef}
+                    placeholder={'Type a message'}
+                    style={styles.textInput}
+                    onChangeText={(text) => setMessage(text)}
+                    value={message}
+                />
+                <MaterialIcons name="camera-alt" size={24} style={styles.camera} />
+                <FontAwesome name="paperclip" size={22} style={styles.clip} />
+            </View>
+            <View style={styles.micContainer}>
+                {
+                    message ? (
+                        <TouchableOpacity>
+                            <MaterialIcons name="send" size={24} style={styles.mic} />
+                        </TouchableOpacity>
+                    ) : (
+                        <TouchableOpacity>
+                            <FontAwesome name="microphone" size={24} style={styles.mic} />
+                        </TouchableOpacity>
+                    )
+                }
+                
+            </View>
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({
@@ -37,7 +67,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     emoji: {
-        
+
         color: '#272727',
         marginRight: 10
     },
@@ -49,8 +79,8 @@ const styles = StyleSheet.create({
     camera: {
         height: 21,
         width: 21,
-        backgroundColor: '#4F4F4F',
-        marginHorizontal: 10
+        marginLeft: 10,
+        marginRight: 20
     },
     clip: {
         height: 21,
@@ -70,6 +100,6 @@ const styles = StyleSheet.create({
     },
     mic: {
         color: '#272727',
-       
+
     }
 })
