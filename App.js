@@ -9,6 +9,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
+import HomeStackNav from './components/HomeStackNav';
+import ChatScreen from './pages/ChatScreen';
 export default function App() {
   const Tab = createBottomTabNavigator();
   const Stack = createNativeStackNavigator()
@@ -17,48 +19,11 @@ export default function App() {
   })
   return (
     <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={{
-          tabBarActiveTintColor: '#FFF',
-          tabBarStyle:{
-            backgroundColor: '#26394D',
-            borderTopColor: '#BABABA'
-          }
-        }}
-        tabBarOptions={{
-          showLabel: false
-        }}
+
+      <Stack.Navigator
+        initialRouteName='Chat'
       >
-        <Tab.Screen
-          name="Profile"
-          component={(props) => <ProfileScreen {...props} /> }
-          options={{
-            tabBarIcon: ({color}) => (
-              <Ionicons name="person" size={24} color={color} />
-            )
-          }}
-        />
-        <Tab.Screen
-          name="Home"
-          component={(props) => <HomeScreen {...props} /> }
-          options={{
-            tabBarIcon: ({color}) => (
-              <Ionicons name="chatbox" size={24} color={color} />
-            )
-          }}
-        />
-        <Tab.Screen
-          name="Favorites"
-          component={(props) => <HomeScreen {...props} /> }
-          options={{
-            tabBarIcon: ({color}) => (
-              <Ionicons name="heart" size={24} color={color} />
-            )
-          }}
-        />
-      </Tab.Navigator>
-      {/* <Stack.Navigator>
-        <Stack.Screen name="Login" options={{
+        {/* <Stack.Screen name="Login" options={{
           headerShown: false
         }}>
           {(props) => <LoginScreen {...props} />}
@@ -67,8 +32,19 @@ export default function App() {
           headerShown: false
         }}>
           {(props) => <RegisterScreen {...props} />}
+        </Stack.Screen> */}
+        <Stack.Screen name="Chat" options={{
+          headerShown: false
+        }}>
+          {(props) => <ChatScreen {...props} />}
+        </Stack.Screen>       
+        <Stack.Screen name="HomeStackNav" options={{
+          headerShown: false
+        }}>
+          {(props) => <HomeStackNav {...props} />}
         </Stack.Screen>
-      </Stack.Navigator> */}
+
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }

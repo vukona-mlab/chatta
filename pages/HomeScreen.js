@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet, Text, View, ScrollView, Modal, Pressable } from 'react-native'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import ChatListItem from '../components/ChatListItem'
 import HomeSearchComponent from '../components/HomeSearchComponent'
 import ChatInputComponent from '../components/ChatInputComponent'
@@ -7,30 +7,32 @@ import ChatRequest from '../components/ChatRequest'
 import FAB from '../components/FAB'
 import ChatComponent from '../components/ChatComponent'
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const [isModalVisible, setIsModalVisible] = useState(false)
   return (
     <View style={styles.container}>
-      {/* <ScrollView
+      <Modal
+        transparent={true}
+        visible={isModalVisible}
+        animationType="slide"
+      >
+        <ChatRequest onPress={() => setIsModalVisible(false)} />
+      </Modal>
+      <ScrollView
         scrollEnabled={true}
       >
-        <ChatListItem />
-        <ChatInputComponent />
-        <Modal
-          transparent={true}
-          visible={isModalVisible}
-          animationType="slide"
-        >
-          <ChatRequest onPress={() => setIsModalVisible(false)}/>
-        </Modal>
-        
+        <ChatListItem navigation={navigation}/>
+        <ChatListItem navigation={navigation}/>
+        <ChatListItem navigation={navigation}/>
+
+
       </ScrollView>
 
       <Pressable onPress={() => setIsModalVisible(true)}>
         <FAB />
-      </Pressable> */}
+      </Pressable>
 
-      <ChatComponent />
+      {/* <ChatComponent /> */}
     </View>
   )
 }

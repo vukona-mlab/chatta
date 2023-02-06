@@ -23,7 +23,8 @@ const styles = StyleSheet.create({
         padding: 10,
         justifyContent: 'center',
         flexDirection: 'row',
-        // backgroundColor: 'red'
+        // backgroundColor: 'red',
+        width: '100%'
     },
     leftView: {
         height: 42,

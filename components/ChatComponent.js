@@ -87,6 +87,7 @@ export default function ChatComponent() {
             <FlatList
                 data={texts}
                 renderItem={renderItem}
+                
                 contentContainerStyle={{ flexDirection: 'column-reverse' }}
             />
         </View>
@@ -95,7 +96,11 @@ export default function ChatComponent() {
 
 const styles = StyleSheet.create({
     container: {
-        padding: 10
+        flex: 1,
+        padding: 10,
+        paddingBottom: 0,
+        overflow: 'hidden',
+        
     },
     contentHolder: {
         width: 280,

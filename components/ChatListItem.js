@@ -1,24 +1,27 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 
-export default function ChatListItem() {
-  return (
-    <View style={styles.container}>
-      <View style={styles.img} />
-      <View style={styles.rightContent}>
-        <View style={styles.topText}>
-            <Text style={styles.contactName}>Vee</Text>
-            <Text style={styles.time}>14:05</Text>
+export default function ChatListItem({navigation}) {
+    return (
+        <View style={styles.container}>
+            <View style={styles.img} />
+            <TouchableOpacity style={styles.touchable} onPress={() => navigation.navigate('Chat')}>
+                <View style={styles.rightContent}>
+                    <View style={styles.topText}>
+                        <Text style={styles.contactName}>Vee</Text>
+                        <Text style={styles.time}>14:05</Text>
+                    </View>
+                    <View style={styles.bottomText}>
+                        <Text numberOfLines={1} style={styles.msg}>Hey, I was thinking we could go to the mall. Would you like to come with?</Text>
+                        <View style={styles.counterContainer}>
+                            <Text style={styles.counter}>3</Text>
+                        </View>
+                    </View>
+                </View>
+            </TouchableOpacity>
+
         </View>
-        <View style={styles.bottomText}>
-            <Text numberOfLines={1} style={styles.msg}>Hey, I was thinking we could go to the mall. Would you like to come with?</Text>
-            <View style={styles.counterContainer}>
-                <Text style={styles.counter}>3</Text>
-            </View>
-        </View>
-      </View>
-    </View>
-  )
+    )
 }
 
 const styles = StyleSheet.create({
@@ -34,6 +37,9 @@ const styles = StyleSheet.create({
         width: 48,
         borderRadius: 24,
         backgroundColor: '#FFFf'
+    },
+    touchable: {
+        flex: 1
     },
     rightContent: {
         flex: 1,
