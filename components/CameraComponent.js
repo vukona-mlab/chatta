@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions } from 'react-native'
 import React, { useEffect, useState, useRef } from 'react'
 import { Camera } from 'expo-camera';
-import { EvilIcons } from '@expo/vector-icons';
+import { EvilIcons, MaterialIcons } from '@expo/vector-icons';
 const CameraComponent = ({ closeCam }) => {
-    const camera = useRef();
+    let camera = useRef();
     const [hasPermissions, setHasPermissions] = useState(false);
+    const [picture, setPic] = useState()
 
     useEffect(() => {
         (async () => {
@@ -12,6 +13,33 @@ const CameraComponent = ({ closeCam }) => {
             setHasPermissions(status === 'granted')
         })
     }, [])
+    const takePicture = async() => {
+        const options ={
+            base64: true,
+            exif: false,
+            quality: 1
+        }
+        const pic = await camera.current.takePictureAsync(options);
+        setPic(pic)
+    }
+    const sendPic =() => {
+
+    }
+    if(picture) {
+        return(
+            <View style={styles.imgCont}>
+                <Image
+                    source={{uri: "data:image/jpg;base64," + picture.base64}}
+                    style={styles.image}
+                />
+                <View style={styles.sendCont}>
+                    <TouchableOpacity onPress={() => sendPic()}>
+                        <MaterialIcons name="send" size={40} style={styles.sendIcon} />
+                    </TouchableOpacity>
+                </View>
+            </View>
+        )
+    }
     return (
         <View style={styles.container}>
             <Camera
@@ -23,7 +51,7 @@ const CameraComponent = ({ closeCam }) => {
                     <EvilIcons name="close" size={24} color="rgb(230, 230, 230)" style={styles.closeIcon} />
                 </TouchableOpacity>
                 <View style={styles.bottom}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => takePicture()}>
                         <View style={styles.capture}>
 
                         </View>
@@ -61,5 +89,27 @@ const styles = StyleSheet.create({
         height: 60,
         width: 60,
         borderRadius: 30
+    },
+    imgCont: {
+        flex: 1,
+    },
+    image: {
+        height: Dimensions.get('window').height,
+        width: Dimensions.get('window').width
+    },
+    sendCont: {
+        position: 'absolute',
+        right: 20,
+        bottom: 20,
+        backgroundColor: '#FFF',
+        height: 60,
+        width: 60,
+        borderRadius: 30,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    sendIcon: {
+        color: '#272727',
+        marginLeft: 5
     }
 })
