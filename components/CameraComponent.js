@@ -2,30 +2,37 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState, useRef } from 'react'
 import { Camera } from 'expo-camera';
 import { EvilIcons } from '@expo/vector-icons';
-const CameraComponent = ({closeCam}) => {
+const CameraComponent = ({ closeCam }) => {
     const camera = useRef();
     const [hasPermissions, setHasPermissions] = useState(false);
 
     useEffect(() => {
-        (async() => {
+        (async () => {
             const { status } = await Camera.getCameraPermissionsAsync();
             setHasPermissions(status === 'granted')
         })
     }, [])
-  return (
-    <View style={styles.container}>
-      <Camera 
-        type="back"
-        ref={camera}
-        style={styles.camera}
-      >
-        <TouchableOpacity onPress={() => closeCam()}>
-            <EvilIcons name="close" size={24} color="rgb(230, 230, 230)" style={styles.closeIcon} />
-        </TouchableOpacity>
+    return (
+        <View style={styles.container}>
+            <Camera
+                type="back"
+                ref={camera}
+                style={styles.camera}
+            >
+                <TouchableOpacity onPress={() => closeCam()}>
+                    <EvilIcons name="close" size={24} color="rgb(230, 230, 230)" style={styles.closeIcon} />
+                </TouchableOpacity>
+                <View style={styles.bottom}>
+                    <TouchableOpacity>
+                        <View style={styles.capture}>
 
-      </Camera>
-    </View>
-  )
+                        </View>
+                    </TouchableOpacity>
+
+                </View>
+            </Camera>
+        </View>
+    )
 }
 
 export default CameraComponent
@@ -36,9 +43,23 @@ const styles = StyleSheet.create({
     },
     camera: {
         flex: 1,
-        width: '100%'
+        width: '100%',
+        justifyContent: 'space-between'
     },
     closeIcon: {
         padding: 10
+    },
+    bottom: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 100
+    },
+    capture: {
+        borderColor: '#FFF',
+        borderWidth: 3,
+        height: 60,
+        width: 60,
+        borderRadius: 30
     }
 })
