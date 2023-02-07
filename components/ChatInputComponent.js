@@ -1,11 +1,21 @@
-import { StyleSheet, Text, TextInput, View, TouchableOpacity, Keyboard } from 'react-native'
-import React, {useRef} from 'react'
+import { StyleSheet, Text, TextInput, View, TouchableOpacity, Keyboard, Modal } from 'react-native'
+import React, {useRef, useState} from 'react'
 import { EvilIcons, FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import CameraComponent from './CameraComponent';
 
-export default function ChatInputComponent({ showEmoGifBoard, isBoardVisible, message, setMessage }) {
+export default function ChatInputComponent({
+    showEmoGifBoard, isBoardVisible, message, setMessage, sendMessage, recordAudio
+}) {
     const inputRef = useRef();
+    const [isCamVisible, setIsCamVisible] = useState(false)
     return (
         <View style={styles.container}>
+            <Modal
+                animationType='slide'
+                visible={isCamVisible}
+            >
+                <CameraComponent closeCam={() => setIsCamVisible(false)}/>
+            </Modal>
             <View style={styles.leftView}>
                 {
                     isBoardVisible ? (
@@ -27,17 +37,20 @@ export default function ChatInputComponent({ showEmoGifBoard, isBoardVisible, me
                     onChangeText={(text) => setMessage(text)}
                     value={message}
                 />
-                <MaterialIcons name="camera-alt" size={24} style={styles.camera} />
+                <TouchableOpacity onPress={() => setIsCamVisible(true)}>
+                    <MaterialIcons name="camera-alt" size={24} style={styles.camera} />
+                </TouchableOpacity>
+                
                 <FontAwesome name="paperclip" size={22} style={styles.clip} />
             </View>
             <View style={styles.micContainer}>
                 {
                     message ? (
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => sendMessage()}>
                             <MaterialIcons name="send" size={24} style={styles.mic} />
                         </TouchableOpacity>
                     ) : (
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => recordAudio()}>
                             <FontAwesome name="microphone" size={24} style={styles.mic} />
                         </TouchableOpacity>
                     )
