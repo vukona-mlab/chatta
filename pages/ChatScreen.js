@@ -1,12 +1,15 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import ChatComponent from '../components/ChatComponent'
 import ChatInputComponent from '../components/ChatInputComponent'
 import KeyboardComponent from '../components/KeyboardComponent'
+import { MaterialIcons, FontAwesome } from '@expo/vector-icons'
+import MediaPicker from '../components/MediaPicker'
 
 const ChatScreen = () => {
   const [showEmoGifBoard, setShowEmoGifBoard] = useState(false);
-  const [msg, setMsg] = useState('')
+  const [msg, setMsg] = useState('');
+  const [showMediaPicker, setShowMediaPicker] = useState(false)
   const handleEmoji = (emo) => {
     console.log(emo.emoji);
     setMsg(msg => {
@@ -29,6 +32,9 @@ const ChatScreen = () => {
     <View style={styles.container}>
       <View style={styles.content}>
         <ChatComponent />
+
+        <MediaPicker isVisible={showMediaPicker}/>
+
         <View style={styles.inputs}>
           <ChatInputComponent
             message={msg}
@@ -37,6 +43,7 @@ const ChatScreen = () => {
             isBoardVisible={showEmoGifBoard}
             sendMessage={() => sendMessage()}
             recordAudio={() => recordAudio()}
+            showMediaPicker={() => setShowMediaPicker(!showMediaPicker)}
           />
         </View>
       </View>
@@ -59,6 +66,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingBottom: 60
   },
+
   inputs: {
     position: 'absolute',
     bottom: 0,

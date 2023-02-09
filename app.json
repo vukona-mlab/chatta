@@ -28,6 +28,10 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-music-picker",
+      { "musicLibraryPermission": "The app accesses your music to play it" }
+    ]
   }
 }

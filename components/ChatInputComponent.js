@@ -1,10 +1,10 @@
 import { StyleSheet, Text, TextInput, View, TouchableOpacity, Keyboard, Modal } from 'react-native'
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 import { EvilIcons, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import CameraComponent from './CameraComponent';
 
 export default function ChatInputComponent({
-    showEmoGifBoard, isBoardVisible, message, setMessage, sendMessage, recordAudio
+    showEmoGifBoard, isBoardVisible, message, setMessage, sendMessage, recordAudio, showMediaPicker
 }) {
     const inputRef = useRef();
     const [isCamVisible, setIsCamVisible] = useState(false)
@@ -14,12 +14,12 @@ export default function ChatInputComponent({
                 animationType='slide'
                 visible={isCamVisible}
             >
-                <CameraComponent closeCam={() => setIsCamVisible(false)}/>
+                <CameraComponent closeCam={() => setIsCamVisible(false)} />
             </Modal>
             <View style={styles.leftView}>
                 {
                     isBoardVisible ? (
-                        <TouchableOpacity onPress={() => { showEmoGifBoard(false); inputRef.current.focus()}}>
+                        <TouchableOpacity onPress={() => { showEmoGifBoard(false); inputRef.current.focus() }}>
                             <MaterialIcons name="keyboard" size={24} style={styles.emoji} />
                         </TouchableOpacity>
                     ) : (
@@ -40,8 +40,10 @@ export default function ChatInputComponent({
                 <TouchableOpacity onPress={() => setIsCamVisible(true)}>
                     <MaterialIcons name="camera-alt" size={24} style={styles.camera} />
                 </TouchableOpacity>
-                
-                <FontAwesome name="paperclip" size={22} style={styles.clip} />
+                <TouchableOpacity onPress={() => showMediaPicker()}>
+                    <FontAwesome name="paperclip" size={22} style={styles.clip} />
+                </TouchableOpacity>
+
             </View>
             <View style={styles.micContainer}>
                 {
@@ -55,7 +57,7 @@ export default function ChatInputComponent({
                         </TouchableOpacity>
                     )
                 }
-                
+
             </View>
         </View>
     )
