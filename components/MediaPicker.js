@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-nati
 import React from 'react'
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons'
 import * as ImagePicker from 'expo-image-picker'
+import * as DocumentPicker from 'expo-document-picker'
 
 const MediaPicker = ({isVisible}) => {
     const openImagePicker = async() => {
@@ -13,6 +14,12 @@ const MediaPicker = ({isVisible}) => {
         }
         const result = await ImagePicker.launchImageLibraryAsync(options)
 
+    }
+    const openAudioPicker = async() => {
+        const options = {
+
+        }
+        const result = await DocumentPicker.getDocumentAsync() 
     }
 
     return (
