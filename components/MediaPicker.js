@@ -4,11 +4,11 @@ import { FontAwesome, MaterialIcons } from '@expo/vector-icons'
 import * as ImagePicker from 'expo-image-picker'
 import * as DocumentPicker from 'expo-document-picker'
 
-const MediaPicker = ({isVisible}) => {
-    const openImagePicker = async() => {
-        const options ={
+const MediaPicker = ({ isVisible }) => {
+    const openImagePicker = async () => {
+        const options = {
             quality: 1,
-            aspect: [4,3],
+            aspect: [4, 3],
             allowsEditing: true,
             mediaTypes: ImagePicker.MediaTypeOptions.All
         }
@@ -17,11 +17,15 @@ const MediaPicker = ({isVisible}) => {
     }
     const openAudioPicker = async() => {
         const options = {
-
+            type: 'audio/mpeg'
         }
-        const result = await DocumentPicker.getDocumentAsync() 
+        try {
+            const result = await DocumentPicker.getDocumentAsync(options);
+            console.log(result);
+        } catch (error) {
+            console.log(error);
+        }
     }
-
     return (
         <>
             {
@@ -33,7 +37,7 @@ const MediaPicker = ({isVisible}) => {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.iconContainer}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => openAudioPicker()}>
                                 <FontAwesome name="microphone" size={30} color="#FFF" style={styles.icons} />
                             </TouchableOpacity>
                         </View>
@@ -55,16 +59,16 @@ const styles = StyleSheet.create({
         padding: 10,
         position: 'absolute',
         bottom: 60
-      },
-      mediaPicker: {
+    },
+    mediaPicker: {
         height: 100,
         width: Dimensions.get('window').width - 20,
         backgroundColor: '#FFF',
         borderRadius: 25,
         flexDirection: 'row',
         alignItems: 'center'
-      },
-      iconContainer: {
+    },
+    iconContainer: {
         backgroundColor: '#1EA0E5',
         borderRadius: 24,
         height: 48,
@@ -72,5 +76,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginLeft: 20
-      },
+    },
 })

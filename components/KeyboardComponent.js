@@ -21,7 +21,7 @@ const KeyboardComponent = ({isBoardVisible, handleGif, handleEmoji}) => {
         fetch('https://api.giphy.com/v1/gifs/trending?api_key=rSOZdzSIvLoNAYiJ7bizgKbhNTNyruRV')
             .then(res => res.json())
             .then(res => {
-                console.log(res);
+                // console.log(res);
                 setGifs(res.data)
             })
     }, [])

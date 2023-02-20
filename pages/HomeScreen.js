@@ -6,6 +6,7 @@ import ChatInputComponent from '../components/ChatInputComponent'
 import ChatRequest from '../components/ChatRequest'
 import FAB from '../components/FAB'
 import ChatComponent from '../components/ChatComponent'
+import { StatusBar } from 'expo-status-bar'
 
 const HomeScreen = ({ navigation }) => {
   const [isModalVisible, setIsModalVisible] = useState(false)
@@ -32,7 +33,7 @@ const HomeScreen = ({ navigation }) => {
         <FAB />
       </Pressable>
 
-      {/* <ChatComponent /> */}
+      <StatusBar style="light" />
     </View>
   )
 }

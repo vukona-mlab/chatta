@@ -1,3 +1,4 @@
+import { FontAwesome } from '@expo/vector-icons';
 import React from 'react'
 import { StyleSheet, View, Image, TouchableOpacity, TextInput, Text } from 'react-native'
 import CameraIcon from '../assets/camera-solid.svg';
@@ -8,7 +9,8 @@ export default function ProfileScreen() {
                 <View style={styles.imageContainer}>
                     <Image style={styles.image} source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/gallery-360-africa.appspot.com/o/2022-05-20T22%3A24%3A10.402Z?alt=media&token=c91c8a48-38f3-471e-8903-e41d5bb9f007' }} />
                     <View style={styles.camContainer}>
-                        <Image style={styles.camIcon} source={{ uri: CameraIcon}} />
+                        {/* <Image style={styles.camIcon} source={{ uri: CameraIcon}} /> */}
+                        <FontAwesome name="camera" size={24} color="#FFF" />
                     </View>
                 </View>
             </View>
@@ -38,19 +40,19 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     topContainer: {
-        height: 280,
+        height: 240,
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center'
     },
     imageContainer: {
-        width: 200,
-        height: 200,
+        width: 160,
+        height: 160,
     },
     image: {
-        width: 200,
-        height: 200,
-        borderRadius: 100,
+        width: 160,
+        height: 160,
+        borderRadius: 80,
  
     },
     camContainer: {
@@ -59,8 +61,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#1EA0E5',
         borderRadius: 21,
         position: 'absolute',
-        top: 146,
-        left: 146,
+        top: 115,
+        left: 115,
         justifyContent: 'center',
         alignItems: 'center'
     },
