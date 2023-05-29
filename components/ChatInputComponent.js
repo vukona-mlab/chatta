@@ -2,6 +2,7 @@ import { StyleSheet, Text, TextInput, View, TouchableOpacity, Keyboard, Modal } 
 import React, { useRef, useState } from 'react'
 import { EvilIcons, FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import CameraComponent from './CameraComponent';
+import { Camera } from 'expo-camera'
 
 export default function ChatInputComponent({
     showEmoGifBoard, isBoardVisible, message, setMessage, sendMessage, recordAudio, showMediaPicker, recording, pauseRecording, stopRecording, deleteRecording, isPaused, recordingTime
@@ -12,6 +13,17 @@ export default function ChatInputComponent({
     const [minutes, setMinutes] = useState(0);
     const [seconds, setSeconds] = useState(5);
     // const [isPaused, setIsPaused] = useState(false)
+
+    const checkCameraPermissions = async() => {
+        try {
+            let status
+            status = (await Camera.getCameraPermissionsAsync()).status
+            if(status !== 'granted') status = (await Camera.requestCameraPermissionsAsync()).status
+            if(status === 'granted') setIsCamVisible(true)
+        } catch (error) {
+            console.log(error);
+        }
+    }
     return (
         <View style={styles.container}>
             <Modal
@@ -44,7 +56,7 @@ export default function ChatInputComponent({
                                 onChangeText={(text) => setMessage(text)}
                                 value={message}
                             />
-                            <TouchableOpacity onPress={() => setIsCamVisible(true)}>
+                            <TouchableOpacity onPress={() => checkCameraPermissions()}>
                                 <MaterialIcons name="camera-alt" size={24} style={styles.camera} />
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => showMediaPicker()}>

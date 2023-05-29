@@ -4,14 +4,14 @@ import { Camera } from 'expo-camera';
 import { EvilIcons, MaterialIcons } from '@expo/vector-icons';
 const CameraComponent = ({ closeCam }) => {
     let camera = useRef();
-    const [hasPermissions, setHasPermissions] = useState(false);
+    // const [hasPermissions, setHasPermissions] = useState(false);
     const [picture, setPic] = useState()
 
     useEffect(() => {
-        (async () => {
-            const { status } = await Camera.getCameraPermissionsAsync();
-            setHasPermissions(status === 'granted')
-        })
+        // (async () => {
+        //     const { status } = await Camera.getCameraPermissionsAsync();
+        //     setHasPermissions(status === 'granted')
+        // })()
     }, [])
     const takePicture = async() => {
         const options ={
