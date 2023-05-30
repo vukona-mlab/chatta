@@ -25,8 +25,10 @@ export default function Register({navigation}) {
       confirmPassword: confirmPassword
     }).then(valid => {
       console.log(valid);
+      if(valid) signUp()
     })
   }
+  
   return (
     <View style={styles.container}>
       <View style={styles.topContainer}>

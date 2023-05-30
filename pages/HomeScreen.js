@@ -7,9 +7,11 @@ import ChatRequest from '../components/ChatRequest'
 import FAB from '../components/FAB'
 import ChatComponent from '../components/ChatComponent'
 import { StatusBar } from 'expo-status-bar'
+import { loginUser } from '../services/firebase'
 
 const HomeScreen = ({ navigation }) => {
   const [isModalVisible, setIsModalVisible] = useState(false)
+
   return (
     <View style={styles.container}>
       <Modal
