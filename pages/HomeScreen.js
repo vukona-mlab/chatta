@@ -7,9 +7,16 @@ import ChatRequest from '../components/ChatRequest'
 import FAB from '../components/FAB'
 import ChatComponent from '../components/ChatComponent'
 import { StatusBar } from 'expo-status-bar'
+import { useContext } from 'react'
+import UserContext from '../contexts/UserContext'
+// import { loginUser } from '../services/firebase-service'
 
 const HomeScreen = ({ navigation }) => {
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const { isLoggedIn} = useContext(UserContext)
+  console.log(
+    isLoggedIn
+  );
   return (
     <View style={styles.container}>
       <Modal

@@ -1,10 +1,59 @@
 import { FontAwesome } from '@expo/vector-icons';
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, View, Image, TouchableOpacity, TextInput, Text } from 'react-native'
 import CameraIcon from '../assets/camera-solid.svg';
+import LoginModal from '../components/LoginModal';
+import { updateUser, loginUserInternal } from '../services/firebase-service'
+
 export default function ProfileScreen() {
+    const [email, setEmail] = useState('')
+    const [username, setUsername] = useState('Vukona')
+    const [password, setPassword] = useState('4532Vee3')
+    const [status, setStatus] = useState('I am online')
+    const [showLoginModal, toggleShowLoginModal] = useState(false)
+
+    const saveForm = async() => {
+        if(password.trim()) {
+            toggleShowLoginModal(true)
+        } else {
+            updateUserDetails()
+        }
+    }
+    const submitPassReset = async(password) => {
+        try {
+            await loginUserInternal(password)
+            toggleShowLoginModal(false)
+            updateUserDetails()
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    const updateUserDetails = async() => {
+        try {
+            const userObj = {
+                email: email,
+                name: username,
+                status: status
+            }
+            if(password.trim()) {
+                userObj.password = password
+            }
+    
+            const res = await updateUser(userObj)
+            console.log(res);
+        } catch (error) {
+         console.log(error);   
+        }
+
+    }
+    
     return (
         <View style={styles.container}>
+            <LoginModal
+                isVisible={showLoginModal}
+                hideModal={() => toggleShowLoginModal(false)}
+                loginUser={(password) => submitPassReset(password)}
+            />
             <View style={styles.topContainer}>
                 <View style={styles.imageContainer}>
                     <Image style={styles.image} source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/gallery-360-africa.appspot.com/o/2022-05-20T22%3A24%3A10.402Z?alt=media&token=c91c8a48-38f3-471e-8903-e41d5bb9f007' }} />
@@ -17,13 +66,29 @@ export default function ProfileScreen() {
             <View style={styles.bottomContainer}>
                 <View style={styles.innerContainer}>
                     <View style={styles.inputContainer}>
-                        <TextInput style={styles.textInput} placeholder="Email" />
-                        <TextInput style={styles.textInput} placeholder="Name" />
-                        <TextInput style={styles.textInput} placeholder="Password" />
-                        <TextInput style={styles.textInput} placeholder="Status" />
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder="Email"
+                            onChangeText={(text) => setEmail(text)}
+                        />
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder="Name"
+                            onChangeText={(text) => setUsername(text)}
+                        />
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder="Password"
+                            onChangeText={(text) => setPassword(text)}
+                        />
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder="Status"
+                            onChangeText={(text) => setStatus(text)}
+                        />
                     </View>
                     <View style={styles.actionContainer}>
-                        <TouchableOpacity style={styles.saveOpt}>
+                        <TouchableOpacity style={styles.saveOpt} onPress={() => saveForm()}>
                             <Text style={styles.saveText}>Save</Text>
                         </TouchableOpacity>
                     </View>

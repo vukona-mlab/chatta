@@ -1,9 +1,16 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, Text, TextInput, TouchableOpacity, Alert } from 'react-native'
+import { useContext } from 'react';
+import { View, StyleSheet, Text, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView } from 'react-native'
 import * as yup from 'yup';
+import PassResetModal from '../components/PassResetModal';
+import UserContext from '../contexts/UserContext';
+import { loginUser, requestPasswordReset } from '../services/firebase-service';
 export default function LoginScreen(props) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('')
+    const [showPassResetModal, toggleShowPassResetModal] = useState(false)
+    const { toggleUserState } = useContext(UserContext)
+    // console.log("fn: ", toggleUserState);
     const schema = yup.object().shape({
         email: yup.string().email().required(),
         password: yup.string().required()
@@ -13,18 +20,42 @@ export default function LoginScreen(props) {
         schema.isValid({
             email: email,
             password: password
-        }).then(valid => {
+        }).then(async valid => {
             if(!valid) {
                 Alert.alert('Form error', 'Form has invalid inputs', [{
                     text: 'Ok', onPress: () => console.log('okay pressed')
                 }])
             } else {
-
+                // call the login function
+                const res = await loginUser(email, password)
+                if(res.success) {
+                    setEmail('');
+                    setPassword('')
+                    // props.navigation.navigate('Home')
+                    toggleUserState(true)
+                } else {
+                    Alert.alert('Sign In Error', res.message, [{
+                        text: 'Ok', onPress: () => console.log('okay pressed')
+                    }])
+                }
+                    
+                
             }
         })
     }
+    const requestPasswordResetEmail = async(email) => {
+        console.log(email);
+        try {
+            console.log('finite');
+            await requestPasswordReset(email)
+            toggleShowPassResetModal(false)
+        } catch (error) {
+            console.log(error);
+        }
+    }
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView enabled={false} behavior={'height'} style={styles.container}>
+        <PassResetModal isVisible={ showPassResetModal } hideModal={() => toggleShowPassResetModal(false)} sendRequest={(email) => requestPasswordResetEmail(email)}/>
         <View style={styles.topContainer}>
             <Text style={styles.appName}>
                 Chatta
@@ -52,13 +83,13 @@ export default function LoginScreen(props) {
                         <Text style={styles.noAccText}>No account?</Text>
                         <Text style={styles.signUpText} onPress={() => props.navigation.navigate('Register')}>Sign Up</Text>
                     </View>
-                    <View style={styles.forgotPasswordCont}>
+                    <TouchableOpacity style={styles.forgotPasswordCont} onPress={() => toggleShowPassResetModal(true)}>
                         <Text style={styles.forgotPasswordText}>Forgot Password</Text>
-                    </View>
+                    </TouchableOpacity>
                 </View>
             </View>
         </View>
-    </View>
+    </KeyboardAvoidingView>
   )
 }
 const styles = StyleSheet.create({
@@ -85,7 +116,8 @@ const styles = StyleSheet.create({
         flex: 2.8,
         width: '100%',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        // backgroundColor: 'red'
     },
     innerContainer: {
         height: 310,

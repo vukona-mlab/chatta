@@ -1,18 +1,22 @@
 
 import { useState } from 'react';
-import { View, StyleSheet, Text, Button, TouchableOpacity, TextInput } from 'react-native'
-import * as yup from 'yup'
-export default function Register({navigation}) {
+import { View, StyleSheet, Text, Button, TouchableOpacity, TextInput, Alert, KeyboardAvoidingView, ScrollView } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import * as yup from 'yup';
+import { registerUser } from '../services/firebase-service';
+
+export default function Register({ navigation }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const insets = useSafeAreaInsets();
 
   const schema = yup.object().shape({
     email: yup.string().email().required(),
     name: yup.string().required(),
     password: yup.string().min(8).required(),
-    confirmPassword: yup.string().min(8).required().test('passwords-match', 'Passords must match', (val) =>{
+    confirmPassword: yup.string().min(8).required().test('passwords-match', 'Passords must match', (val) => {
       // console.log({password, });
       return password === val
     })
@@ -23,17 +27,33 @@ export default function Register({navigation}) {
       password: password,
       email: email,
       confirmPassword: confirmPassword
-    }).then(valid => {
+    }).then(async valid => {
       console.log(valid);
+      if (valid) {
+        // call register function
+        const res = await registerUser(email, name, password, confirmPassword)
+        if (res.success) {
+          navigation.navigate('Profile')
+        } else {
+          Alert.alert('Sign In Error', res.message, [{
+            text: 'Ok', onPress: () => console.log('okay pressed')
+          }])
+        }
+      }
     })
   }
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={[styles.container, { paddingBottom: insets.bottom, paddingTop: insets.top + 20 }]}
+      enabled={true}
+      behavior={'height'}
+    >
       <View style={styles.topContainer}>
         <Text style={styles.appName}>Chatta</Text>
       </View>
-      <View style={styles.bottomContainer}>
+      <ScrollView horizontal={false} contentContainerStyle={styles.bottomContainer}>
         <View style={styles.innerContainer}>
+
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.textInput}
@@ -50,12 +70,14 @@ export default function Register({navigation}) {
               placeholder="Password"
               onChangeText={(text) => setPassword(text)}
             />
+
             <TextInput
               style={styles.textInput}
               placeholder="Confirm Password"
               onChangeText={(text) => setConfirmPassword(text)}
             />
           </View>
+
           <View style={styles.actionContainer}>
             <TouchableOpacity style={styles.actionButton} onPress={() => validate()}>
               <Text style={styles.signUp}>Sign Up</Text>
@@ -67,8 +89,8 @@ export default function Register({navigation}) {
           </View>
         </View>
 
-      </View>
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   )
 }
 const styles = StyleSheet.create({
@@ -80,7 +102,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   topContainer: {
-    flex: 1.2,
+    // flex: 1.2,
+    height: 180,
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -91,16 +114,16 @@ const styles = StyleSheet.create({
     fontFamily: 'berkshire'
   },
   bottomContainer: {
-    flex: 2.8,
+    flex: 1,
     justifyContent: 'center',
-    minHeight: 420
+    minHeight: 420,
   },
   innerContainer: {
     padding: 20,
     height: 420,
     width: 320,
     backgroundColor: '#FFF',
-    borderRadius: 25
+    borderRadius: 25,
   },
   inputContainer: {
     height: 270,
