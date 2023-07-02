@@ -4,9 +4,13 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ProfileScreen from '../pages/ProfileScreen';
 import HomeScreen from '../pages/HomeScreen';
 import { Ionicons } from '@expo/vector-icons';
+import { logoutUser } from '../services/firebase-service';
+import { useContext } from 'react';
+import UserContext from '../contexts/UserContext';
 
 const HomeStackNav = () => {
   const Tab = createBottomTabNavigator();
+  const { toggleUserState } = useContext(UserContext)
   return (
     <Tab.Navigator
       initialRouteName='Home'
@@ -31,7 +35,7 @@ const HomeStackNav = () => {
             </TouchableOpacity>
           ),
           headerRight: () => (
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => logoutUser(() => toggleUserState(false))}>
               <Ionicons name="log-out-outline" size={24} color="#FFF" style={styles.logoutIcon} />
             </TouchableOpacity>
           ),

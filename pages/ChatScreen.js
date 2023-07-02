@@ -7,14 +7,17 @@ import { MaterialIcons, FontAwesome } from '@expo/vector-icons'
 import MediaPicker from '../components/MediaPicker';
 import { Audio } from 'expo-av'
 import { StatusBar } from 'expo-status-bar'
+import { acceptRequest, deleteRequest, fetchOngoingMessages } from '../services/firebase-service'
 
 let audioRecording
-const ChatScreen = () => {
+const ChatScreen = ({ navigation, route }) => {
+console.log('hey');
   const [showEmoGifBoard, setShowEmoGifBoard] = useState(false);
   const [msg, setMsg] = useState('');
   const [showMediaPicker, setShowMediaPicker] = useState(false);
   const [recording, setRecording] = useState();
   const [isPaused, setIsPaused] = useState();
+  const [messages, setMessages] = useState([])
   const [recordingTime, setRecordingTime] = useState({hours: 0, minutes: 0, seconds: 0})
   const handleEmoji = (emo) => {
     console.log(emo.emoji);
@@ -73,15 +76,83 @@ const ChatScreen = () => {
     setIsPaused(false)
   }
   useEffect(() => {
-    console.log(msg);
+    // console.log(msg);
   }, [msg])
+  const handleOngoingChats = (snapShot) => {
+    
+    snapShot.forEach((doc) => {
+      const datetime = new Date(doc.data().time.toDate())
+      const date = datetime.getDate() + '/' + (datetime.getMonth() + 1 ) + '/' + datetime.getFullYear();
+      const time = datetime.getHours() + ':' + datetime.getMinutes() + (datetime.getHours() > 12 ? ' PM' : ' AM')
+      // console.log('msg: ', doc.data());
+      setMessages((messages) => {
+        return [...messages, { text: doc.data().message, ID: doc.data().sender, timeSent: time, dateSent: date}]
+      })
+    })
+  }
+  useEffect(() => {
+    let ongoingChatsSub
+    if(route.params.type === 'chatRequest') {
+      const textInfo = route.params.data
+      setMessages([{
+        text: textInfo.message,
+        userID: textInfo.requestorID,
+        timeSent: textInfo.timeSent,
+        dateSent: textInfo.dateSent
+      }])
+
+    } else {
+      ongoingChatsSub = fetchOngoingMessages(route.params.data.id, handleOngoingChats)
+    }
+    // console.log(messages);
+    return () => {
+      if(ongoingChatsSub) {
+        ongoingChatsSub()
+      }
+    }
+  }, [])
+  useEffect(() => {
+    // console.log(messages);
+  }, [messages])
   const handleGif = (url) => {
     console.log(url);
+  }
+  const declineRequest = async() => {
+    try {
+      await deleteRequest(route.params.data.requestorID)
+      navigation.navigate('Home')
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  const acceptUserRequest = async() => {
+    try {
+      await acceptRequest(route.params.data)
+      navigation.navigate('Home')
+    } catch (error) {
+      console.log(error);
+    }
   }
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <ChatComponent />
+        {
+          route.params.type === 'chatRequest' && (
+            <View style={styles.requestOptionsCont}>
+            <Text style={styles.requestHeader}>User requests a chat</Text>
+            <View style={styles.requestBtns}>
+              <TouchableOpacity style={[styles.requestTouchable, {backgroundColor: 'red'}]} onPress={() => declineRequest()}>
+                <Text style={styles.requestTouchableText}>Decline</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.requestTouchable, {backgroundColor: 'green'}]} onPress={() => acceptUserRequest()}>
+                <Text style={styles.requestTouchableText}>Accept</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          )
+        }
+
+        <ChatComponent texts={ messages } />
         <MediaPicker isVisible={showMediaPicker}/>
 
         <View style={styles.inputs}>
@@ -123,6 +194,36 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     paddingBottom: 60
+  },
+  requestOptionsCont: {
+    paddingVertical: 10,
+    width: Dimensions.get('window').width,
+    backgroundColor: 'rgba(200, 200, 200, 0.1)'
+  },
+  requestHeader: {
+    fontSize: 18,
+    fontWeight: '400',
+    color: 'rgb(230, 230, 230)',
+    alignSelf: 'center'
+  },
+  requestBtns: {
+    marginTop: 10,
+    flexDirection: 'row',
+    paddingHorizontal: 10
+  },
+  requestTouchable: {
+    height: 50,
+    flex: 1,
+    marginHorizontal: 10,
+    borderRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  requestTouchableText: {
+    fontSize: 21,
+    color: 'rgb(240, 240, 240)',
+    fontWeight: '500',
+    letterSpacing: 0.5
   },
 
   inputs: {

@@ -1,20 +1,23 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 
-export default function ChatListItem({navigation}) {
+export default function ChatListItem({navigation, type, data, name}) {
+    // console.log('data: ',data);
+    // console.log(name);
+    
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, type === 'chatRequest' && { backgroundColor: '#47A37B' }]}>
             <View style={styles.img} />
-            <TouchableOpacity style={styles.touchable} onPress={() => navigation.navigate('Chat')}>
+            <TouchableOpacity style={styles.touchable} onPress={() => navigation.navigate('Chat', { type: type, data: data })}>
                 <View style={styles.rightContent}>
                     <View style={styles.topText}>
-                        <Text style={styles.contactName}>Vee</Text>
-                        <Text style={styles.time}>14:05</Text>
+                        <Text style={styles.contactName}>{ data.name || data.id }</Text>
+                        <Text style={styles.time}>{ data.dateSent }</Text>
                     </View>
                     <View style={styles.bottomText}>
-                        <Text numberOfLines={1} style={styles.msg}>Hey, I was thinking we could go to the mall. Would you like to come with?</Text>
+                        <Text numberOfLines={1} style={styles.msg}>{ data.message || data.lastMessage?.message || 'Text loading' }</Text>
                         <View style={styles.counterContainer}>
-                            <Text style={styles.counter}>3</Text>
+                            <Text style={styles.counter}>{ type === 'chatRequest' ? 1 : 3 }</Text>
                         </View>
                     </View>
                 </View>

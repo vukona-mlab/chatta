@@ -1,16 +1,19 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
 import React from 'react'
+import { useState } from 'react'
 
 export default function ChatRequest({onPress}) {
+    const [email, setEmail] = useState('')
+    const [msg, setMsg] = useState('')
     return (
         <View style={styles.centered}>
             <View style={styles.container}>
                 <View style={styles.inputs}>
-                    <TextInput placeholder="Email" style={styles.textInput} />
-                    <TextInput placeholder="Message" style={styles.textInput} />
+                    <TextInput placeholder="Email" onChangeText={(text) => setEmail(text)} style={styles.textInput} />
+                    <TextInput placeholder="Message" onChangeText={(text) => setMsg(text)} style={styles.textInput} />
                 </View>
 
-                <TouchableOpacity style={styles.button} onPress={() => onPress()}>
+                <TouchableOpacity style={styles.button} onPress={() => onPress(email, msg)}>
                     <Text style={styles.buttonText}>Send Request</Text>
                 </TouchableOpacity>
             </View>

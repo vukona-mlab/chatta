@@ -1,8 +1,10 @@
 
+import { useContext } from 'react';
 import { useState } from 'react';
 import { View, StyleSheet, Text, Button, TouchableOpacity, TextInput, Alert, KeyboardAvoidingView, ScrollView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as yup from 'yup';
+import UserContext from '../contexts/UserContext';
 import { registerUser } from '../services/firebase-service';
 
 export default function Register({ navigation }) {
@@ -11,6 +13,7 @@ export default function Register({ navigation }) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const insets = useSafeAreaInsets();
+  const { toggleUserState } = useContext(UserContext)
 
   const schema = yup.object().shape({
     email: yup.string().email().required(),
@@ -33,6 +36,8 @@ export default function Register({ navigation }) {
         // call register function
         const res = await registerUser(email, name, password, confirmPassword)
         if (res.success) {
+          
+          toggleUserState(true)
           navigation.navigate('Profile')
         } else {
           Alert.alert('Sign In Error', res.message, [{

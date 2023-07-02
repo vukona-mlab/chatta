@@ -1,10 +1,16 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { Entypo } from '@expo/vector-icons'
+import { useEffect } from 'react';
 
-export default function ChatComponent() {
+export default function ChatComponent({ texts }) {
     const userID = 'veeINdf5345'
-    const texts = [
+    // console.log('texts: ', texts);
+    // console.log('in the chat com');
+    useEffect(() => {
+        console.log('hey there');
+    }, [])
+    const textse = [
         {
             text: 'Hi there', userID: userID
         },
@@ -52,7 +58,7 @@ export default function ChatComponent() {
         }
     ]
     const renderItem = ({ item, index }) => {
-        // console.log(par);
+        // console.log('item: ', item);
         return (
             <View>
                 <View style={[
@@ -68,7 +74,7 @@ export default function ChatComponent() {
                         <Text style={styles.text}>{item.text}</Text>
                     </View>
                     <View style={styles.timeSent}>
-                        <Text style={styles.whiteText}>1:36 PM</Text>
+                        <Text style={styles.whiteText}>{ item.timeSent }</Text>
                         {
                             item.userID === userID && (<>
                                 <Entypo name="dot-single" color="#FFF" size={16} />

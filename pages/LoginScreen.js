@@ -46,7 +46,7 @@ export default function LoginScreen(props) {
     const requestPasswordResetEmail = async(email) => {
         console.log(email);
         try {
-            console.log('finite');
+            // console.log('finite');
             await requestPasswordReset(email)
             toggleShowPassResetModal(false)
         } catch (error) {

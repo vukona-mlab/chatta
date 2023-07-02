@@ -7,11 +7,11 @@ const LoginModal = ({ isVisible, hideModal, loginUser }) => {
     const textRef = useRef()
     useEffect(() => {
         const hideSubscription = Keyboard.addListener('keyboardDidHide', (e) => {
-            console.log(e);
+            // console.log(e);
             setKeyboardHeight(e.endCoordinates.height)
         })
         const showSubscription = Keyboard.addListener('keyboardDidShow', (e) => {
-            console.log(e);
+            // console.log(e);
             setKeyboardHeight(e.endCoordinates.height)
         })
         textRef?.current?.focus()

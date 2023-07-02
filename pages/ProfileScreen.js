@@ -13,7 +13,7 @@ export default function ProfileScreen() {
     const [showLoginModal, toggleShowLoginModal] = useState(false)
 
     const saveForm = async() => {
-        if(password.trim()) {
+        if(password.trim() || email.trim()) {
             toggleShowLoginModal(true)
         } else {
             updateUserDetails()

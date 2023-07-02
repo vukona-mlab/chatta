@@ -15,10 +15,16 @@ import React from 'react'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import UserContext from './contexts/UserContext';
 import { useState } from 'react';
+import { useEffect } from 'react';
+import { checkAuthState } from './services/firebase-service';
 export default function App() {
   const Tab = createBottomTabNavigator();
   const Stack = createNativeStackNavigator()
-  const [isLoggedIn, setUserState] = useState(false)
+  const [isLoggedIn, setUserState] = useState(!!checkAuthState())
+
+  useEffect(() => {
+    console.log('auth State: ', !!checkAuthState());
+  }, [])
   useFonts({
     'berkshire': require('./assets/fonts/berkshire.ttf')
   }) // switch to Fonts.loadAsync
