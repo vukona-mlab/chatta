@@ -7,7 +7,7 @@ import { MaterialIcons, FontAwesome } from '@expo/vector-icons'
 import MediaPicker from '../components/MediaPicker';
 import { Audio } from 'expo-av'
 import { StatusBar } from 'expo-status-bar'
-import { acceptRequest, deleteRequest, fetchOngoingMessages } from '../services/firebase-service'
+import { acceptRequest, deleteRequest, fetchOngoingMessages, sendAudio, sendImage, sendPlainText } from '../services/firebase-service'
 
 let audioRecording
 const ChatScreen = ({ navigation, route }) => {
@@ -25,7 +25,12 @@ console.log('hey');
       return msg += emo.emoji
     })
   }
-  const sendMessage = () => {
+  const sendMessage = async() => {
+    try {
+      const res = await sendPlainText(route.params.data.id, msg)
+    } catch (error) {
+      console.log(error);
+    }
 
   }
   const updateTime = (mils) => {
@@ -79,16 +84,15 @@ console.log('hey');
     // console.log(msg);
   }, [msg])
   const handleOngoingChats = (snapShot) => {
-    
+    let messagesArr = []
     snapShot.forEach((doc) => {
       const datetime = new Date(doc.data().time.toDate())
       const date = datetime.getDate() + '/' + (datetime.getMonth() + 1 ) + '/' + datetime.getFullYear();
       const time = datetime.getHours() + ':' + datetime.getMinutes() + (datetime.getHours() > 12 ? ' PM' : ' AM')
       // console.log('msg: ', doc.data());
-      setMessages((messages) => {
-        return [...messages, { text: doc.data().message, ID: doc.data().sender, timeSent: time, dateSent: date}]
-      })
+      messagesArr = [...messagesArr, { text: doc.data().message, ID: doc.data().sender, timeSent: time, dateSent: date}]
     })
+    setMessages(messagesArr)
   }
   useEffect(() => {
     let ongoingChatsSub
@@ -133,6 +137,20 @@ console.log('hey');
       console.log(error);
     }
   }
+  const sendFile = async(file, type, metadata) => {
+    console.log('in func');
+    try {
+      let result
+      if(type === 'image') {
+        result = await sendImage(route.params.data.id, file)
+      } else {
+        result = await sendAudio(route.params.data.id, file, metadata)
+      }
+      console.log(result);
+    } catch (error) {
+      
+    }
+  }
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -153,7 +171,7 @@ console.log('hey');
         }
 
         <ChatComponent texts={ messages } />
-        <MediaPicker isVisible={showMediaPicker}/>
+        <MediaPicker isVisible={showMediaPicker} sendFile={sendFile}/>
 
         <View style={styles.inputs}>
           <ChatInputComponent
