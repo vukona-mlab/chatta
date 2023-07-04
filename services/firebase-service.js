@@ -1,6 +1,6 @@
 import { createUserWithEmailAndPassword, EmailAuthCredential, EmailAuthProvider, reauthenticateWithCredential, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updateEmail, updatePassword } from "firebase/auth";
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, orderBy, query, serverTimestamp, setDoc, updateDoc, where } from "firebase/firestore";
-import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes, uploadString } from "firebase/storage";
 import { firestore, auth, storage } from "../firebaseConfig";
 
 
@@ -259,6 +259,102 @@ const sendPlainText = async(chatRoomID, text) => {
     }
 }
 
+const sendImage = async(chatRoomID, file) => {
+    try {
+        const messageColRef = collection(firestore, 'chatRooms', chatRoomID, 'messages')
+        const messageDocRef = doc(messageColRef)
+        const messageDocID = messageDocRef.id
+        console.log(file);
+        // create a blob
+        const blob = await new Promise((resolve, reject) => {
+            let xhr = new XMLHttpRequest()
+            xhr.onload = () => resolve(xhr.response)
+            xhr.onerror = () => reject(new TypeError('Conversion failed'))
+            xhr.responseType = 'blob'
+            xhr.open('GET', file, true)
+            xhr.send(null)
+        })
+        
+        const imageRef = ref(storage, '/messages/images/' + messageDocID)
+        return uploadBytes(imageRef, blob).then(res => {
+            return getDownloadURL(res.ref).then(async url => {
+                const messageObject = {
+                    message: url,
+                    sender: auth.currentUser.uid,
+                    type: 'image',
+                    time: serverTimestamp(),
+                    status: 'sent'
+                }
+                const result = await setDoc(messageDocRef, {
+                    ...messageObject,
+                    starred: false
+                })
+
+                const chatRoomDocRef = doc(firestore, 'chatRooms', chatRoomID)
+                await updateDoc(chatRoomDocRef, {
+                    lastMessage: messageObject,
+                    time: messageObject.time
+                })
+                
+                blob.close()
+                return { success: true, message: 'image successfully sent' }
+            })
+        })
+
+
+
+    } catch (error) {
+        return { success: false, message: error }
+    }
+}
+const sendAudio = async(chatRoomID, file) => {
+    try {
+        const messageCollectionRef = collection(firestore, 'chatRooms', chatRoomID, 'messages')
+        const messageDocRef = doc(messageCollectionRef)
+        const messageDocID = messageDocRef.id
+
+        const blob = await new Promise((resolve, reject) =>{
+            let xhr = new XMLHttpRequest();
+            xhr.onload = () => resolve(xhr.response)
+            xhr.onerror = () => reject(new TypeError('Conversion failed'))
+            xhr.responseType = "blob"
+            xhr.open('GET', file, true)
+            xhr.send(null)
+        })
+
+        const audioRef = ref(storage, '/messages/audio/' + messageDocID)
+        return uploadBytes(audioRef, blob).then( res => {
+            return getDownloadURL(res.ref).then(async url => {
+                const messageObject = {
+                    message: url,
+                    sender: auth.currentUser.uid,
+                    type: 'audio',
+                    time: serverTimestamp(),
+                    status: 'sent'
+                }
+
+                await setDoc(messageDocRef, {
+                    ...messageObject,
+                    starred: false
+                })
+
+                const chatRoomDocRef = doc(firestore, 'chatRooms', chatRoomID)
+                await updateDoc(chatRoomDocRef, {
+                    lastMessage: messageObject,
+                    time: messageObject.time
+                })
+                blob.close()
+                return { success: true, message: 'audio successfully sent'}
+            })
+        })
+
+
+
+    } catch (error) {
+        return { success: false, message: error }
+    }
+}
+
 const checkAuthState = () => auth?.currentUser?.uid
 
 // registerUser('vukona@mlab.co.za', 'Vukona', '12345678', '12345678')
@@ -283,5 +379,7 @@ export {
     checkAuthState,
     deleteRequest,
     acceptRequest,
-    sendPlainText
+    sendPlainText,
+    sendImage,
+    sendAudio
 }

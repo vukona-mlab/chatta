@@ -7,7 +7,7 @@ import { MaterialIcons, FontAwesome } from '@expo/vector-icons'
 import MediaPicker from '../components/MediaPicker';
 import { Audio } from 'expo-av'
 import { StatusBar } from 'expo-status-bar'
-import { acceptRequest, deleteRequest, fetchOngoingMessages, sendPlainText } from '../services/firebase-service'
+import { acceptRequest, deleteRequest, fetchOngoingMessages, sendAudio, sendImage, sendPlainText } from '../services/firebase-service'
 
 let audioRecording
 const ChatScreen = ({ navigation, route }) => {
@@ -31,7 +31,19 @@ console.log('hey');
     } catch (error) {
       console.log(error);
     }
-
+  }
+  const sendFile = async(file, type) => {
+    try {
+      let result;
+      if(type === 'image') {
+        result = await sendImage(route.params.data.id, file)
+      } else {
+        result = await sendAudio(route.params.data.id, file)
+      }
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
   }
   const updateTime = (mils) => {
     // console.log(mils);

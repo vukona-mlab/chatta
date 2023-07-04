@@ -14,7 +14,9 @@ const MediaPicker = ({ isVisible, sendFile }) => {
         }
         const result = await ImagePicker.launchImageLibraryAsync(options)
         console.log(result);
-  
+        if(result.assets[0].uri) {
+            sendFile(result.assets[0].uri, 'image')
+        }
     }
     const openAudioPicker = async() => {
         const options = {
@@ -23,7 +25,9 @@ const MediaPicker = ({ isVisible, sendFile }) => {
         try {
             const result = await DocumentPicker.getDocumentAsync(options);
             console.log(result);
-
+            if(result.uri) {
+                sendFile(result.uri, 'audio')
+            }
 
         } catch (error) {
             console.log(error);
