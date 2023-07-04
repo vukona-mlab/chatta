@@ -14,12 +14,12 @@ export default function ChatInputComponent({
     const [seconds, setSeconds] = useState(5);
     // const [isPaused, setIsPaused] = useState(false)
 
-    const checkCameraPermissions = async() => {
+    const checkCameraPermissions = async () => {
         try {
             let status
             status = (await Camera.getCameraPermissionsAsync()).status
-            if(status !== 'granted') status = (await Camera.requestCameraPermissionsAsync()).status
-            if(status === 'granted') setIsCamVisible(true)
+            if (status !== 'granted') status = (await Camera.requestCameraPermissionsAsync()).status
+            if (status === 'granted') setIsCamVisible(true)
         } catch (error) {
             console.log(error);
         }
@@ -65,30 +65,30 @@ export default function ChatInputComponent({
                         </>
                     ) : (
                         <View style={styles.recordingCont}>
-                            { isPaused ? (
+                            {isPaused ? (
                                 <TouchableOpacity onPress={() => recordAudio()}>
-                            <MaterialIcons name="fiber-manual-record" size={32} color="rgb(200, 80, 80)" style={[styles.pauseicon, { top: -3 }]} />
-                            </TouchableOpacity>
+                                    <MaterialIcons name="fiber-manual-record" size={32} color="rgb(200, 80, 80)" style={[styles.pauseicon, { top: -3 }]} />
+                                </TouchableOpacity>
                             ) : (
                                 <TouchableOpacity onPress={() => pauseRecording()}>
-                            <Ionicons name="pause" size={24} color="black" style={styles.pauseicon}/>
-                            </TouchableOpacity>
-                            ) } 
-                            
-                            <Text style={styles.text}>{ isPaused ? "Paused" : "Recording..." }</Text>
+                                    <Ionicons name="pause" size={24} color="black" style={styles.pauseicon} />
+                                </TouchableOpacity>
+                            )}
+
+                            <Text style={styles.text}>{isPaused ? "Paused" : "Recording..."}</Text>
                             <View style={styles.recordingTime}>
-                                { recordingTime.hours > 0 && <Text style={styles.text}>{recordingTime.hours + ':'}</Text> }
+                                {recordingTime.hours > 0 && <Text style={styles.text}>{recordingTime.hours + ':'}</Text>}
                                 <Text style={styles.text}>{recordingTime.minutes + ':'}</Text>
                                 <Text style={styles.text}>{recordingTime.seconds}</Text>
                             </View>
-                            <TouchableOpacity onPress={() => stopRecording() }>
-                            <Ionicons name="stop" size={24} color="black" style={styles.stopIcon}/>
+                            <TouchableOpacity onPress={() => stopRecording()}>
+                                <Ionicons name="stop" size={24} color="black" style={styles.stopIcon} />
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => deleteRecording}>
-                            <MaterialIcons name="delete" size={24} color="rgb(200, 80, 80)" style={styles.delIcon}/>
+                                <MaterialIcons name="delete" size={24} color="rgb(200, 80, 80)" style={styles.delIcon} />
                             </TouchableOpacity>
-                            
-                            
+
+
                         </View>
                     )
                 }

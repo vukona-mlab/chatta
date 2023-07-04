@@ -13,12 +13,8 @@ const MediaPicker = ({ isVisible, sendFile }) => {
             mediaTypes: ImagePicker.MediaTypeOptions.Images
         }
         const result = await ImagePicker.launchImageLibraryAsync(options)
-        // if(result.assets[0]?.uri) {
-        //     console.log('trigger');
-        //     sendFile(result.assets[0].uri, 'image')
-        // }
         console.log(result);
-        sendFile(result.assets[0].uri, 'image')
+  
     }
     const openAudioPicker = async() => {
         const options = {
@@ -27,14 +23,7 @@ const MediaPicker = ({ isVisible, sendFile }) => {
         try {
             const result = await DocumentPicker.getDocumentAsync(options);
             console.log(result);
-            if(result.type === 'success') {
-                const metadata = {
-                    mimeType: result.mimeType,
-                    name: result.name,
-                    size: result.size
-                }
-                sendFile(result.uri, 'audio', metadata)
-            }
+
 
         } catch (error) {
             console.log(error);
