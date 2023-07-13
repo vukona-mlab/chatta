@@ -53,7 +53,7 @@ console.log('hey');
       seconds: Math.floor((mils.durationMillis / 1000) % 60) 
     }
     setRecordingTime(time)
-    console.log(time);
+    // console.log(time);
   }
   const recordAudio = async() => {
     try {
@@ -102,7 +102,7 @@ console.log('hey');
       const date = datetime.getDate() + '/' + (datetime.getMonth() + 1 ) + '/' + datetime.getFullYear();
       const time = datetime.getHours() + ':' + datetime.getMinutes() + (datetime.getHours() > 12 ? ' PM' : ' AM')
       // console.log('msg: ', doc.data());
-      messagesArr = [...messagesArr, { text: doc.data().message, ID: doc.data().sender, timeSent: time, dateSent: date}]
+      messagesArr = [...messagesArr, { docID: doc.id, text: doc.data().message, ID: doc.data().sender, timeSent: time, dateSent: date, type: doc.data().type }]
     })
     setMessages(messagesArr)
   }
