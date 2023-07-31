@@ -25,7 +25,7 @@ export default function ProfileScreen() {
             toggleShowLoginModal(false)
             updateUserDetails()
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
     const updateUserDetails = async() => {
@@ -40,9 +40,9 @@ export default function ProfileScreen() {
             }
     
             const res = await updateUser(userObj)
-            console.log(res);
+            // console.log(res);
         } catch (error) {
-         console.log(error);   
+        //  console.log(error);   
         }
 
     }

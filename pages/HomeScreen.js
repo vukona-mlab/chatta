@@ -20,15 +20,15 @@ const HomeScreen = ({ navigation }) => {
   const [name, setName] = useState('')
   const [chatRequests, setChatRequests] = useState([])
   const [ongoingChats, setOngoingChats] = useState([])
-  console.log(
-    isLoggedIn
-  );
+  // console.log(
+  //   isLoggedIn
+  // );
     const requestChat = async(email, msg) => {
       try {
         const res = await requestNewChat(email, msg)
         // console.log(res);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     }
     const chatRequestSnapShothandler = async(snapShot) => {
@@ -124,6 +124,7 @@ const HomeScreen = ({ navigation }) => {
         transparent={true}
         visible={isModalVisible}
         animationType="slide"
+        onRequestClose={() => setIsModalVisible(false)}
       >
         <ChatRequest onPress={(email, msg) => { setIsModalVisible(false); requestChat(email, msg) }} />
       </Modal>
@@ -131,13 +132,13 @@ const HomeScreen = ({ navigation }) => {
         scrollEnabled={true}
       >
         {
-          chatRequests.map((data) => {
-            return <ChatListItem navigation={navigation} type={'chatRequest'} data={data} />
+          chatRequests.map((data, id) => {
+            return <ChatListItem key={id} navigation={navigation} type={'chatRequest'} data={data} />
           })
         }
         {
-          ongoingChats.map((data) => {
-            return <ChatListItem navigation={navigation} type={'ongoingChat'} data={data} />
+          ongoingChats.map((data, id) => {
+            return <ChatListItem key={id} navigation={navigation} type={'ongoingChat'} data={data} />
           })
         }
         
@@ -148,7 +149,7 @@ const HomeScreen = ({ navigation }) => {
       </ScrollView>
 
       <Pressable onPress={() => setIsModalVisible(true)}>
-        <FAB />
+        <FAB/>
       </Pressable>
 
       <StatusBar style="light" />

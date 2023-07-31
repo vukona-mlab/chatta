@@ -15,7 +15,7 @@
             text: 'Woah is me', userID: userID
         },
         {
-            text: 'When everything is done', userID: userID
+            text: 'When everything is done', userI userID
         },
         {
             text: 'I think I need more money. This is not it, I can not be broke forever', userID: 'asdfjj43534'
@@ -45,3 +45,7 @@
             text: 'I think I need more money. This is not it, I can not be broke forever', userID: 'asdfjj43534'
         }
     ]
+
+
+what is a node
+What is intelligence amplification

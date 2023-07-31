@@ -13,7 +13,7 @@ const KeyboardComponent = ({isBoardVisible, handleGif, handleEmoji}) => {
     const [query, setQuery] = useState('')
 
     const captureEmoji = (ev) => {
-        console.log(ev);
+        // console.log(ev);
         setEmoji(ev.emoji)
     }
     // console.log(selectedGif);

@@ -31,7 +31,7 @@ export default function Register({ navigation }) {
       email: email,
       confirmPassword: confirmPassword
     }).then(async valid => {
-      console.log(valid);
+      // console.log(valid);
       if (valid) {
         // call register function
         const res = await registerUser(email, name, password, confirmPassword)

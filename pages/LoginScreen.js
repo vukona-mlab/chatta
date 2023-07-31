@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useEffect } from 'react';
 import { useContext } from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView } from 'react-native'
 import * as yup from 'yup';
@@ -17,6 +18,7 @@ export default function LoginScreen(props) {
     })
 
     const handleSubmit = () => {
+        // console.log({ email, password });
         schema.isValid({
             email: email,
             password: password
@@ -44,15 +46,22 @@ export default function LoginScreen(props) {
         })
     }
     const requestPasswordResetEmail = async(email) => {
-        console.log(email);
+        // console.log(email);
         try {
             // console.log('finite');
             await requestPasswordReset(email)
             toggleShowPassResetModal(false)
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
+    useEffect( () => {
+        setEmail('vukona@mlab.co.za')
+        setPassword('12345678')
+    }, [])
+    useEffect( () => {
+        if(email && password) handleSubmit()
+    }, [email, password])
   return (
     <KeyboardAvoidingView enabled={false} behavior={'height'} style={styles.container}>
         <PassResetModal isVisible={ showPassResetModal } hideModal={() => toggleShowPassResetModal(false)} sendRequest={(email) => requestPasswordResetEmail(email)}/>

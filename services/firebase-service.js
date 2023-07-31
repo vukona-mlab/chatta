@@ -7,10 +7,10 @@ import { firestore, auth, storage } from "../firebaseConfig";
 const loginUser = async(email, password) => {
     try {
         const res = await signInWithEmailAndPassword(auth, email, password);
-        console.log(res.user.uid);
+        // console.log(res.user.uid);
         return { message: 'User successfully signed in', success: true }
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return error
     }
 }
@@ -19,10 +19,10 @@ const loginUserInternal = async(password) => {
         // good coding practices
         const credential = EmailAuthProvider.credential(auth.currentUser.email, password);
         const result = await reauthenticateWithCredential(auth.currentUser, credential)
-        console.log(result);
+        // console.log(result);
         return { message: 'User successfully signed in', success: true }
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return error
     }
 }
@@ -35,7 +35,7 @@ const registerUser = async(email, username, password, confirmPassword) => {
         await setDoc(docRef, { name: username, uid: userCredentials.user.uid })
         return { message: 'User successfully registered', success: true }
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return error
     }
 
@@ -48,12 +48,12 @@ const updateUser = async(userObject) => {
         delete userObject.password
         const docRef = doc(firestore, 'users', auth.currentUser.uid)
         await setDoc(docRef, userObject)
-        console.log('success');
+        // console.log('success');
         if(password) await setPassword(password)
         if(email) await setEmail(email)
         return { success: true, message: 'User has been updated' }
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return error
     }
 }
@@ -64,17 +64,17 @@ const fetchUserData = async(id) => {
         // console.log(userData.data()); 
         return userData
     } catch (error) {
-        console.log(error);
+        // console.log(error);
     }
 }
 
 const logoutUser = async(callback) => {
     try {
         await signOut(auth)
-        console.log('signed out');
+        // console.log('signed out');
         callback()
     } catch (error) {
-        console.log(error);
+        // console.log(error);
     }
 }
 const setPassword = async(password) => {
@@ -82,7 +82,7 @@ const setPassword = async(password) => {
         await updatePassword(auth.currentUser, password)
         // console.log('success');
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return { ...error, success: 'false' }
     }
 }
@@ -98,7 +98,7 @@ const requestPasswordReset = async(email) => {
     try {
         await sendPasswordResetEmail(auth, email)
     } catch (error) {
-        console.log(error);
+        // console.log(error);
     }
 }
 
@@ -133,14 +133,14 @@ const requestNewChat = async(email, msg) => {
         const chatSnapshot = await getDocs(chatQry)
         let alreadyFriends = false
         for(let i = 0; i < chatSnapshot.size; i++) {
-            console.log(chatSnapshot.docs[i].data());
+            // console.log(chatSnapshot.docs[i].data());
             const members = chatSnapshot.docs[i].data().members;
             if(members.includes(recipientUID) && members.includes(auth.currentUser.uid)) {
                 alreadyFriends = true;
                 break
             }
         }
-        console.log(alreadyFriends);
+        // console.log(alreadyFriends);
         // console.log('rec: ', recipientUID);
         if(alreadyFriends) return { message: 'Already friends', status: 'failed' }
 
@@ -154,7 +154,7 @@ const requestNewChat = async(email, msg) => {
         })
         return requestResult
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return error
     }
 }
@@ -184,7 +184,7 @@ const deleteRequest = async(senderID) => {
         await deleteDoc(docRef)
         return { message: 'succes' }
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return error
     }
 
@@ -225,7 +225,7 @@ const acceptRequest = async(data) => {
         await deleteRequest(data.requestorID)
         return { message: 'success' }
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return error
     }
 
@@ -233,7 +233,7 @@ const acceptRequest = async(data) => {
 }
 
 const sendPlainText = async(chatRoomID, text) => {
-    console.log('Sending text');
+    // console.log('Sending text');
     try {
         const collectionRef = collection(firestore, 'chatRooms', chatRoomID, 'messages')
         const messageObject = {
@@ -254,7 +254,7 @@ const sendPlainText = async(chatRoomID, text) => {
         })
         return { success: true, message: 'Message successfully sent' }
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         return { success: false, message: error }
     }
 }
@@ -264,7 +264,7 @@ const sendImage = async(chatRoomID, file) => {
         const messageColRef = collection(firestore, 'chatRooms', chatRoomID, 'messages')
         const messageDocRef = doc(messageColRef)
         const messageDocID = messageDocRef.id
-        console.log(file);
+        // console.log(file);
         // create a blob
         const blob = await new Promise((resolve, reject) => {
             let xhr = new XMLHttpRequest()

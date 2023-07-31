@@ -21,7 +21,7 @@ export default function ChatInputComponent({
             if (status !== 'granted') status = (await Camera.requestCameraPermissionsAsync()).status
             if (status === 'granted') setIsCamVisible(true)
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
     return (

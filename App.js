@@ -21,9 +21,9 @@ export default function App() {
   const Tab = createBottomTabNavigator();
   const Stack = createNativeStackNavigator()
   const [isLoggedIn, setUserState] = useState(!!checkAuthState())
-
+  // console.log = () => null
   useEffect(() => {
-    console.log('auth State: ', !!checkAuthState());
+    // console.log('auth State: ', !!checkAuthState());
   }, [])
   useFonts({
     'berkshire': require('./assets/fonts/berkshire.ttf')
