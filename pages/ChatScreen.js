@@ -11,7 +11,7 @@ import { acceptRequest, deleteRequest, fetchOngoingMessages, sendAudio, sendImag
 
 let audioRecording
 const ChatScreen = ({ navigation, route }) => {
-console.log('hey');
+// console.log('hey');
   const [showEmoGifBoard, setShowEmoGifBoard] = useState(false);
   const [msg, setMsg] = useState('');
   const [showMediaPicker, setShowMediaPicker] = useState(false);
@@ -20,7 +20,7 @@ console.log('hey');
   const [messages, setMessages] = useState([])
   const [recordingTime, setRecordingTime] = useState({hours: 0, minutes: 0, seconds: 0})
   const handleEmoji = (emo) => {
-    console.log(emo.emoji);
+    // console.log(emo.emoji);
     setMsg(msg => {
       return msg += emo.emoji
     })
@@ -29,7 +29,7 @@ console.log('hey');
     try {
       const res = await sendPlainText(route.params.data.id, msg)
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   }
   const sendFile = async(file, type) => {
@@ -40,9 +40,9 @@ console.log('hey');
       } else {
         result = await sendAudio(route.params.data.id, file)
       }
-      console.log(result);
+      // console.log(result);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   }
   const updateTime = (mils) => {
@@ -53,7 +53,7 @@ console.log('hey');
       seconds: Math.floor((mils.durationMillis / 1000) % 60) 
     }
     setRecordingTime(time)
-    console.log(time);
+    // console.log(time);
   }
   const recordAudio = async() => {
     try {
@@ -83,7 +83,7 @@ console.log('hey');
     await audioRecording.stopAndUnloadAsync();
     const uri = audioRecording.getURI();
     audioRecording = null
-    console.log(uri);
+    // console.log(uri);
     setIsPaused(false);
     setRecording(false)
   }
@@ -102,7 +102,7 @@ console.log('hey');
       const date = datetime.getDate() + '/' + (datetime.getMonth() + 1 ) + '/' + datetime.getFullYear();
       const time = datetime.getHours() + ':' + datetime.getMinutes() + (datetime.getHours() > 12 ? ' PM' : ' AM')
       // console.log('msg: ', doc.data());
-      messagesArr = [...messagesArr, { text: doc.data().message, ID: doc.data().sender, timeSent: time, dateSent: date}]
+      messagesArr = [...messagesArr, { docID: doc.id, text: doc.data().message, ID: doc.data().sender, timeSent: time, dateSent: date, type: doc.data().type }]
     })
     setMessages(messagesArr)
   }
@@ -131,14 +131,14 @@ console.log('hey');
     // console.log(messages);
   }, [messages])
   const handleGif = (url) => {
-    console.log(url);
+    // console.log(url);
   }
   const declineRequest = async() => {
     try {
       await deleteRequest(route.params.data.requestorID)
       navigation.navigate('Home')
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   }
   const acceptUserRequest = async() => {
@@ -146,7 +146,7 @@ console.log('hey');
       await acceptRequest(route.params.data)
       navigation.navigate('Home')
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   }
 

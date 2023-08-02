@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useEffect } from 'react';
 import { useContext } from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView } from 'react-native'
 import * as yup from 'yup';
@@ -6,8 +7,8 @@ import PassResetModal from '../components/PassResetModal';
 import UserContext from '../contexts/UserContext';
 import { loginUser, requestPasswordReset } from '../services/firebase-service';
 export default function LoginScreen(props) {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('')
+    const [email, setEmail] = useState('vukona@mlab.co.za');
+    const [password, setPassword] = useState('12345678')
     const [showPassResetModal, toggleShowPassResetModal] = useState(false)
     const { toggleUserState } = useContext(UserContext)
     // console.log("fn: ", toggleUserState);
@@ -21,14 +22,14 @@ export default function LoginScreen(props) {
             email: email,
             password: password
         }).then(async valid => {
-            if(!valid) {
+            if (!valid) {
                 Alert.alert('Form error', 'Form has invalid inputs', [{
                     text: 'Ok', onPress: () => console.log('okay pressed')
                 }])
             } else {
                 // call the login function
                 const res = await loginUser(email, password)
-                if(res.success) {
+                if (res.success) {
                     setEmail('');
                     setPassword('')
                     // props.navigation.navigate('Home')
@@ -38,12 +39,12 @@ export default function LoginScreen(props) {
                         text: 'Ok', onPress: () => console.log('okay pressed')
                     }])
                 }
-                    
-                
+
+
             }
         })
     }
-    const requestPasswordResetEmail = async(email) => {
+    const requestPasswordResetEmail = async (email) => {
         console.log(email);
         try {
             // console.log('finite');
@@ -53,44 +54,49 @@ export default function LoginScreen(props) {
             console.log(error);
         }
     }
-  return (
-    <KeyboardAvoidingView enabled={false} behavior={'height'} style={styles.container}>
-        <PassResetModal isVisible={ showPassResetModal } hideModal={() => toggleShowPassResetModal(false)} sendRequest={(email) => requestPasswordResetEmail(email)}/>
-        <View style={styles.topContainer}>
-            <Text style={styles.appName}>
-                Chatta
-            </Text>
-        </View>
-        <View style={styles.bottomContainer}>
-            <View style={styles.innerContainer}>
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        style={styles.textInput}
-                        placeholder="Email"
-                        onChangeText={(text) => setEmail(text)} />
-                    <TextInput
-                        style={styles.textInput}
-                        placeholder="Password"
-                        onChangeText={(text) => setPassword(text)} />
-                </View>
-                <View style={styles.actionContainer}>
-                    <TouchableOpacity
-                        style={styles.actionButton}
-                        onPress={() => handleSubmit()}>
-                        <Text style={styles.signIn}>Sign In</Text>
-                    </TouchableOpacity>
-                    <View style={styles.signUpOpt}>
-                        <Text style={styles.noAccText}>No account?</Text>
-                        <Text style={styles.signUpText} onPress={() => props.navigation.navigate('Register')}>Sign Up</Text>
+
+    useEffect(() => {
+        if(email && password) handleSubmit()
+    }, [email, password])
+
+    return (
+        <KeyboardAvoidingView enabled={false} behavior={'height'} style={styles.container}>
+            <PassResetModal isVisible={showPassResetModal} hideModal={() => toggleShowPassResetModal(false)} sendRequest={(email) => requestPasswordResetEmail(email)} />
+            <View style={styles.topContainer}>
+                <Text style={styles.appName}>
+                    Chatta
+                </Text>
+            </View>
+            <View style={styles.bottomContainer}>
+                <View style={styles.innerContainer}>
+                    <View style={styles.inputContainer}>
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder="Email"
+                            onChangeText={(text) => setEmail(text)} />
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder="Password"
+                            onChangeText={(text) => setPassword(text)} />
                     </View>
-                    <TouchableOpacity style={styles.forgotPasswordCont} onPress={() => toggleShowPassResetModal(true)}>
-                        <Text style={styles.forgotPasswordText}>Forgot Password</Text>
-                    </TouchableOpacity>
+                    <View style={styles.actionContainer}>
+                        <TouchableOpacity
+                            style={styles.actionButton}
+                            onPress={() => handleSubmit()}>
+                            <Text style={styles.signIn}>Sign In</Text>
+                        </TouchableOpacity>
+                        <View style={styles.signUpOpt}>
+                            <Text style={styles.noAccText}>No account?</Text>
+                            <Text style={styles.signUpText} onPress={() => props.navigation.navigate('Register')}>Sign Up</Text>
+                        </View>
+                        <TouchableOpacity style={styles.forgotPasswordCont} onPress={() => toggleShowPassResetModal(true)}>
+                            <Text style={styles.forgotPasswordText}>Forgot Password</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
-        </View>
-    </KeyboardAvoidingView>
-  )
+        </KeyboardAvoidingView>
+    )
 }
 const styles = StyleSheet.create({
     container: {
@@ -110,7 +116,7 @@ const styles = StyleSheet.create({
         fontFamily: 'berkshire',
         fontSize: 54,
         color: '#FFF',
-        
+
     },
     bottomContainer: {
         flex: 2.8,
