@@ -102,7 +102,14 @@ const ChatScreen = ({ navigation, route }) => {
       const date = datetime.getDate() + '/' + (datetime.getMonth() + 1 ) + '/' + datetime.getFullYear();
       const time = datetime.getHours() + ':' + datetime.getMinutes() + (datetime.getHours() > 12 ? ' PM' : ' AM')
       // console.log('msg: ', doc.data());
-      messagesArr = [...messagesArr, { docID: doc.id, text: doc.data().message, ID: doc.data().sender, timeSent: time, dateSent: date, type: doc.data().type }]
+      messagesArr = [...messagesArr, {
+        docID: doc.id,
+        text: doc.data().message,
+        ID: doc.data().sender,
+        timeSent: time,
+        dateSent: date,
+        type: doc.data().type
+      }]
     })
     setMessages(messagesArr)
   }

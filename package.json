@@ -30,7 +30,8 @@
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "~0.18.9",
     "rn-emoji-keyboard": "^1.2.0",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "@react-native-community/slider": "4.2.4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
